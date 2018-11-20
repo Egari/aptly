@@ -55,6 +55,14 @@ func aptlyPublishUpdate(cmd *commander.Command, args []string) error {
 			"the same package pool.\n")
 	}
 
+	if context.Flags().IsSet("origin") {
+		published.Origin = context.Flags().Lookup("origin").Value.String()
+	}
+
+	if context.Flags().IsSet("label") {
+		published.Label = context.Flags().Lookup("label").Value.String()
+	}
+
 	if context.Flags().IsSet("skip-contents") {
 		published.SkipContents = context.Flags().Lookup("skip-contents").Value.Get().(bool)
 	}
@@ -111,6 +119,8 @@ Example:
 	cmd.Flag.Bool("batch", false, "run GPG with detached tty")
 	cmd.Flag.Bool("skip-signing", false, "don't sign Release files with GPG")
 	cmd.Flag.Bool("skip-contents", false, "don't generate Contents indexes")
+	cmd.Flag.String("origin", "", "overwrite origin name to publish")
+	cmd.Flag.String("label", "", "label to publish")
 	cmd.Flag.Bool("force-overwrite", false, "overwrite files in package pool in case of mismatch")
 	cmd.Flag.Bool("skip-cleanup", false, "don't remove unreferenced files in prefix/component")
 
